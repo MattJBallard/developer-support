@@ -125,11 +125,11 @@ class agolAdmin(object):
     #Assign a name or ID for a user role
     def roleAssign(self,roleInput):
 
-        for key,val in self.roleDict.iteritems():
+        for key,val in self.roleDict.items():
          if key.lower() == roleInput.lower():
-             return val
+             return key
          if val.lower() == roleInput.lower():
-            return key
+            return val
 
     #updates username properties depending on the input
 
@@ -212,7 +212,7 @@ class agolAdmin(object):
             encodechunk=[x.encode('UTF8') for x in chunks]
             itemList=""
             for it in encodechunk:
-                itemList=itemList+it+","
+                itemList=itemList+it.decode("utf-8")+","
             folderURL = '{}.maps.arcgis.com/sharing/rest/content/users/{}/deleteItems'.format(self.portalUrl,userName)
             data = {'f':'json','token':self.token, 'items':itemList}
             response = requests.post(folderURL,data=data, verify = False).json()
@@ -243,7 +243,7 @@ class agolAdmin(object):
                 response = requests.post(delURL,data=data, verify = False).json()
                 try:
                     if response['success']:
-                         print "deleting is a group" + row['id']
+                         print "deleting group: " + row['id']
                 except:
                     print 'there is an application in this group that must be manually removed'
                     quit()
@@ -255,6 +255,8 @@ class agolAdmin(object):
         response = requests.post(proUrl, data=data, verify=False).json()
         navURL= '{}.maps.arcgis.com/sharing/rest/content/listings/b2d9a4dd70174fac8986dd2bf15a477a/provisionUserEntitlements'.format(self.portalUrl)
         response = requests.post(navURL, data=data, verify=False).json()
+        D2MURL= '{}.maps.arcgis.com/sharing/rest/content/listings/3855a9d026f64917a09bfc78b590c42f/provisionUserEntitlements'.format(self.portalUrl)
+        response = requests.post(D2MURL, data=data, verify=False).json()
         #disable my ESri Access
 
         userURL ='https://{}.maps.arcgis.com/sharing/rest/community/users/{}/update'.format(self.__urlKey, userName)
