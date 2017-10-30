@@ -16,7 +16,7 @@ if __name__ == '__main__':
     user = 'username'
     pw  = 'password'
 
-    roleID = 'Delete'
+    roleID = 'Delete'#The role ID or name (key or value) that you want to delete
     #Generates Token
     t=accountHelperDelete.agolAdmin(user,pw)
 
